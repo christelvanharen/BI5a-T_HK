@@ -38,31 +38,22 @@ public class DAT {
                 try {
                     BufferedReader b =
                             new BufferedReader(new FileReader(bestand_invoeren.getText()));
-                    Scanner reader = new Scanner(b);
-                    String [] woord=null;
                     FileReader f = new FileReader(bestand_invoeren.getText());
-                    String s;
-                    String input= zoekwoord_meegeven.getText();
+                    String line;
+                    String input= (zoekwoord_meegeven.getText().toLowerCase());
                     int lines = 0;
                     int tellen=0;
 
-                    while (reader.hasNextLine()) {
-                        b.readLine(); //aantal regels van het
-                        // bestand bepalen
-                        lines++;
+                    while ((line = b.readLine()) != null) {
+                        if ((line.toLowerCase()).contains(input)) {
+                            tellen++;
+                        } else {
+                            lines++;
+                        }
                     }
 
-//                    while ((s=b.readLine())!=null) {
-//                        woord=s.split("\\s");
-//                        for (String woorden : woord) {
-//                            if (woorden.equals(input)) {
-//                                tellen++;
-//                            }
-//                        }
-//                    }
-
                     if (tellen!=0){
-                        System.out.println("Het woord zit" + tellen + "keer in het bestand");
+                        System.out.println("Het woord zit " + tellen + " keer in het bestand");
                     }
                     else {
                         System.out.println("Het woord zit niet in het" +
@@ -86,7 +77,6 @@ public class DAT {
                 }
             });
     }
-
 
     public static void main(String[] args) throws ReflectiveOperationException {
         try {
