@@ -4,10 +4,11 @@
  */
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.Scanner;
+
 
 public class DAT {
     private JPanel panel;
@@ -20,10 +21,14 @@ public class DAT {
     private JFileChooser fileChooser;
 
     public DAT() {
+        /**
+         * Het bestand wordt ingelezen en de analyseerknop voor het
+         * zoekwoord wordt gemaakt
+         */
         bladerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                File selectedFile;
+                File selectedFile; // bestand inlezen
                 fileChooser = new JFileChooser();
                 int reply = fileChooser.showOpenDialog(null);
                 if (reply == JFileChooser.APPROVE_OPTION) {
@@ -43,7 +48,7 @@ public class DAT {
                     String input= (zoekwoord_meegeven.getText().toLowerCase());
                     int lines = 0;
                     int tellen=0;
-
+                    // tellen in hoeveel regels het zoekwoord voorkomt
                     while ((line = b.readLine()) != null) {
                         if ((line.toLowerCase()).contains(input)) {
                             tellen++;
@@ -51,32 +56,33 @@ public class DAT {
                             lines++;
                         }
                     }
+                    // totaal aantal regels
+                    float totaal = tellen + lines;
+                    System.out.println(totaal);
 
-                    if (tellen!=0){
-                        System.out.println("Het woord zit " + tellen + " keer in het bestand");
-                    }
-                    else {
-                        System.out.println("Het woord zit niet in het" +
-                                " bestand.");
-                    }
                     b.close();
                     f.close();
 
-                    int percentage = ((tellen / lines) * 100);
+                    // percentage berekening
+                    float percentage = ((float) tellen / totaal * 100);
 
 //                    System.out.println("Dit bestand heeft " + lines +
 //                            " regels.");
-                    textArea.setText("Dit bestand heeft " + lines +
+                    textArea.setText("Dit bestand heeft " + totaal +
                             " regels." + "\n" + "Het ingevoerde " +
                             "zoekwoord is: " + zoekwoord_meegeven.getText() +
                             "\n" + "Het woord komt voor in " + tellen + " regels." + "\n" + "Dat is " + percentage + "% van alle regels.");
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
+//                } catch (NotAValidFile navf) { // deze werkt nog niet
+//                    // helemaal
+//                    JOptionPane.showMessageDialog("Het bestand is corrupt.");
                 }
-
                 }
             });
     }
+
+
 
     public static void main(String[] args) throws ReflectiveOperationException {
         try {
@@ -88,6 +94,8 @@ public class DAT {
         JFrame frame = new JFrame("DAT | Disease Analyse Tool");
         frame.setContentPane(new DAT().panel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setPreferredSize(new Dimension(600, 400));
+        frame.setResizable(false);
         frame.pack();
         frame.setVisible(true);
     }
